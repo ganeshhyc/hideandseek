@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+
+  <title>Game</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.9.1/firebase.js"></script>
+    <script src="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.js"></script>
+    <script src="https://cdn.firebase.com/libs/angularfire/2.3.0/angularfire.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.css" />
+
+
+  <script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyAvSq0HBsiMFZxlMAhN-S0QjbkUmr0oT5U",
+      authDomain: "hide-fcb42.firebaseapp.com",
+      databaseURL: "https://hide-fcb42.firebaseio.com",
+      projectId: "hide-fcb42",
+      storageBucket: "",
+      messagingSenderId: "20026678975"
+    };
+    firebase.initializeApp(config);
+  </script></head>
+
+<body style="background-color:lightgrey;">
+<input id="username" type="text" name="username" placeholder="ENTER USERNAME" required style="width:300px; height: 50px;"><br>
+<button style="width:300px; height: 50px;" onclick="search()">Search for players</button><br><br>
+<canvas id="myCanvas" width="570" height="570" style="background-color: black"></canvas>
+<script src="js/var.js"></script>
+<script src="js/search.js"></script>
+<script src="js/playerManage.js"></script>
+<script src="js/checkMap.js"></script>
+<script src="js/event.js"></script>
+<script src="js/canvas.js"></script>
+
+</body>
+</html>

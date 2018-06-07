@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+
+  <title>Game</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.9.1/firebase.js"></script>
+    <script src="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.js"></script>
+    <script src="https://cdn.firebase.com/libs/angularfire/2.3.0/angularfire.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.css" />
+
+
+  <script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyAvSq0HBsiMFZxlMAhN-S0QjbkUmr0oT5U",
+      authDomain: "hide-fcb42.firebaseapp.com",
+      databaseURL: "https://hide-fcb42.firebaseio.com",
+      projectId: "hide-fcb42",
+      storageBucket: "",
+      messagingSenderId: "20026678975"
+    };
+    firebase.initializeApp(config);
+  </script></head>
+
+<body style="background-color:lightgrey;">
+<input id="username" type="text" name="username" placeholder="ENTER USERNAME" required style="width:300px; height: 50px;"><br>
+<button style="width:300px; height: 50px;" onclick="search()">Search for players</button><br><br>
+<canvas id="myCanvas" width="570" height="570" style="background-color: black">
+
+
+  </canvas><script>
+
+var x = 70;var l=false;var r=false;
+var y = 70;var u=false;var d=false;
+var rx = 0;var color = "red";
+var ry = 0;var size = 1;
+var rxl = 0;var px=370;var py=370;
+var ryl = 0;var image = "down"
+var moveX = 70;var moveY = undefined;
+var num=2;var player2 = "new.png";
+var con = -5;var inc = 1;
+var dex="";var name;
+var firebaseref;var firebaseHeaderRef;
+var dey="";function search(){
+  name=document.getElementById("username").value;
+  //alert(name);
+
+firebaseHeaderRef = firebase.database().ref().child("game").child(name);
+ firebaseHeaderRef.on("value",function(datasnapshot){
+    // $scope.data = datasnapshot.val();
+    var data = datasnapshot.val();
+    x = data.x;y = data.y;
+    if(data.dir=="d") image="down";
+    if(data.dir=="u") image="top";
+    if(data.dir=="r") image="right";
+    if(data.dir=="l") image="left";
+    //console.log(data);
+  });}
+// function myFunction(e) {
+//     if(e.clientY<=510&&e.clientY>=10){
+//       y = e.clientY;
+//       firebaseref.child("pingPong").child("playerA").set(y);
+//     }
+// }
+
+
+
+var c = document.getElementById("myCanvas");
+var ctx = c.getContext("2d");
+
+
+function draw() {
+
+    // clear the canvas so the old rectangles are gone
+    ctx.clearRect(0, 0, c.width, c.height);
+
+
+    ctx.beginPath();
+    ctx.lineWidth = "2";
+    ctx.strokeStyle = "grey";
+    ctx.rect(5, 5, 560, 560);
+    ctx.stroke();
+
+    for(var i=0;i<600;i+=100){
+      for(var j=0;j<600;j+=100){
+        ctx.beginPath();
+        ctx.lineWidth = "5";
+        ctx.strokeStyle = "gray";
+        ctx.rect(i+10, j+10, 50, 50);
+        ctx.stroke();
+        ctx.fillStyle = "grey";
+        ctx.fill();
+
+      }
+    }
+    if((r||l)&&color!="red"){
+        for(var i=rx;i<rxl;i++){
+            ctx.beginPath();
+            ctx.lineWidth = "5";
+            ctx.strokeStyle = color ;
+            ctx.rect(i+15+con,  ry+15+con, size, size);
+            ctx.stroke();
+            ctx.fillStyle = "black";
+            ctx.fill();
+          }
+
+      }
+    if((u||d)&&color!="red"){
+        for(var i=ry;i<ryl;i++){
+            ctx.beginPath();
+            ctx.lineWidth = "5";
+            ctx.strokeStyle = color ;
+            ctx.rect(rx+15+con,  i+15+con, size, size);
+            ctx.stroke();
+            ctx.fillStyle = "black";
+            ctx.fill();
+
+          }
+        }
+
+    if(color=="red"){          ctx.beginPath();inc=10;
+              ctx.lineWidth = "5";
+              ctx.strokeStyle = color ;
+                if(l||r){
+                  if(r){
+                    ctx.rect(moveX+15+con,  moveY+15+con, size, size);
+                    ctx.stroke();
+                    ctx.fillStyle = "black";
+                    ctx.fill();
+                      moveX+=inc;
+              }
+                  if(l){
+                    ctx.rect(moveX+15+con+x,  moveY+15+con, size, size);
+                    ctx.stroke();
+                    ctx.fillStyle = "black";
+                    ctx.fill();
+                      moveX-=inc;
+                  }
+                }
+                else if(u||d){
+                  if(d){
+
+                ctx.rect(moveX+15+con,  moveY+15+con, size, size);
+                ctx.stroke();
+                ctx.fillStyle = "black";
+                ctx.fill();
+                moveY+=inc;
+              }
+                  if(u){
+
+                ctx.rect(moveX+15+con,  moveY+15+con+y, size, size);
+                ctx.stroke();
+                ctx.fillStyle = "black";
+                ctx.fill();
+                moveY-=inc;
+              }
+                }
+
+              if(moveX==px&&moveY==py){
+                player2 = "des.gif";inc=0;
+              //console.log(moveX+","+px+"//"+moveY+","+py);
+            }
+            if(moveX<0)
+              if((x+moveX)==px&&moveY==py){
+                player2 = "des.gif";inc=0;
+              }
+            if(moveY<0)
+              if(x==px&&(y+moveY)==py){
+                player2 = "des.gif";inc=0;
+              }
+
+              if(moveX<0||(x+moveX)>600||moveY<0||(y+moveY)>600)
+                {inc=0;
+                //console.log("x="+x+"fdcv"+moveX+","+px+"&"+moveY+","+py);
+}
+}
+
+
+    //ctx.beginPath();
+    var base_image = new Image();
+    base_image.src = image+".png";
+    ctx.drawImage(base_image, x-10, y-10,50,50);
+
+    var base_image = new Image();
+    base_image.src = player2;
+
+
+
+    ctx.drawImage(base_image, px-10, py-10,50,50);
+    window.requestAnimationFrame(draw);
+}
+window.requestAnimationFrame(draw);
+// window.setInterval(draw, 1000.0 / 50.0);
+</script>
+
+</body>
+</html>
